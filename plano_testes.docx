@@ -1,0 +1,56 @@
+
+PLANO DE TESTES - LÓGICA DE SAÍDA DE ALMOXARIFADO
+Objetivo Geral: Validar a integridade das regras de negócio aplicadas especificamente às movimentações de saída de materiais (S), garantindo o bloqueio por saldo insuficiente, a efetivação de baixas válidas por diferentes perfis de usuários e a correta rastreabilidade do sistema.
+
+
+CT-01: Bloqueio de Saída por Estoque Insuficiente
+Módulo: Movimentações (Operação de Saída)
+
+Objetivo: Garantir que a API impeça a retirada de produtos solicitados em quantidade superior ao saldo atual disponível.
+
+Pré-condições: O sistema deve possuir um produto com saldo definido (ex: 10 unidades).
+
+Passos de Execução:
+
+Autenticar na API com o usuário Administrador (senai).
+
+Enviar uma requisição com o método POST para a rota /api/movimentacoes/.
+
+Preencher o corpo da requisição (JSON) informando o tipo "S" (Saída) e uma quantidade superior ao estoque (ex: 9999).
+
+Resultado Esperado: O sistema deve interceptar e bloquear a operação, retornando o status HTTP 400 Bad Request e exibindo exatamente a mensagem: "Saída não permitida: estoque insuficiente".
+
+CT-02: Efetivação de Saída Válida por Usuário Administrador
+Módulo: Movimentações (Operação de Saída e Rastreabilidade)
+
+Objetivo: Validar se o sistema permite uma operação de saída dentro do limite do saldo quando disparada pelo Administrador e se vincula a ação corretamente.
+
+Pré-condições: O sistema deve possuir um produto com saldo suficiente.
+
+Passos de Execução:
+
+Autenticar na API com o usuário Administrador (senai).
+
+Enviar uma requisição com o método POST para a rota /api/movimentacoes/.
+
+Preencher o corpo da requisição (JSON) informando o tipo "S" (Saída) e uma quantidade válida (ex: 5 unidades).
+
+Resultado Esperado: A transação deve ser aceita com sucesso, retornando o status HTTP 201 Created. O registro gerado deve exibir a data/hora atual e o nome de usuário senai vinculado automaticamente como responsável.
+
+CT-03: Efetivação de Saída por Usuário Operador (Não-Admin)
+Módulo: Movimentações (Permissões de Acesso e Rastreabilidade)
+
+Objetivo: Validar que usuários com o perfil de Operador também possuem permissão para realizar o fluxo de saída de materiais e que o sistema registra corretamente a autoria da ação para esse perfil.
+
+Pré-condições: 1. O usuário vinicius deve estar cadastrado e ativo como Operador.
+2. O produto deve possuir saldo disponível em estoque.
+
+Passos de Execução:
+
+Autenticar na API utilizando as credenciais do operador (vinicius).
+
+Enviar uma requisição com o método POST para a rota /api/movimentacoes/.
+
+Preencher o corpo da requisição (JSON) informando o tipo "S" (Saída) e uma quantidade válida (ex: 1 unidade).
+
+Resultado Esperado: A API deve processar a saída com sucesso, alterando o saldo do produto e retornando o status HTTP 201 Created. O JSON de resposta deve conter automaticamente o vínculo com o usuário logado (vinicius) e a data/hora exata do evento.
