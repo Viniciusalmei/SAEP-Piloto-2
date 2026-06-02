@@ -20,7 +20,8 @@ class Movimentacao(models.Model):
     quantidade = models.IntegerField()
     tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)
     data_hora = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Mudamos para PROTECT para que o histórico não suma se um usuário for deletado 
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, related_name='movimentacoes')
 
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.produto.nome} ({self.quantidade})"
