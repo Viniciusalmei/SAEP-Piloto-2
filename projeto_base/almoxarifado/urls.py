@@ -1,8 +1,24 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ProdutoViewSet, MovimentacaoViewSet, ProdutoViewSet, MovimentacaoViewSet, CadastroView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+
+router = DefaultRouter()
+router.register(r'produtos', ProdutoViewSet)
+router.register(r'movimentacoes', MovimentacaoViewSet)
 
 urlpatterns = [
-    path('produtos/', views.listar_produtos, name='listar_produtos'),
-    path('produtos/movimentar/<int:produto_id>/', views.registrar_movimentacao, name='registrar_movimentacao'),
-    path('produtos/excluir/<int:produto_id>/', views.excluir_produto, name='excluir_produto'),
+    path('', include(router.urls)),
+]
+
+router = DefaultRouter()
+router.register(r'produtos', ProdutoViewSet)
+router.register(r'movimentacoes', MovimentacaoViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('auth/cadastro/', CadastroView.as_view()),
+    path('auth/login/', TokenObtainPairView.as_view()),
+    path('auth/refresh/', TokenRefreshView.as_view()),
 ]
