@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-prova-saep-senai-key-12345'
 
 DEBUG = True
 

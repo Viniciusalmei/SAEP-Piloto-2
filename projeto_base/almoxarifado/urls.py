@@ -1,11 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import ProdutoViewSet, MovimentacaoViewSet
-
-router = DefaultRouter()
-router.register(r'produtos', ProdutoViewSet)
-router.register(r'movimentacoes', MovimentacaoViewSet)
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('produtos/', views.listar_produtos, name='listar_produtos'),
+    path('produtos/movimentar/<int:produto_id>/', views.registrar_movimentacao, name='registrar_movimentacao'),
+    path('produtos/excluir/<int:produto_id>/', views.excluir_produto, name='excluir_produto'),
 ]
