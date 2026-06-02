@@ -13,7 +13,7 @@ class PermisoRoles(permissions.BasePermission):
         return False
 
 class ProdutoViewSet(viewsets.ModelViewSet):
-    queryset = Produto.objects.all().order_by('id')
+    queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
     permission_classes = [PermisoRoles]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -45,4 +45,5 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
         producto.save()
         serializer.save(usuario=self.request.user)
     
+
     
