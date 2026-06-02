@@ -16,5 +16,4 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
     serializer_class = MovimentacaoSerializer
     
     def perform_create(self, serializer):
-        # ATENÇÃO ALUNO! Implemente a logica de estoque aqui 
         serializer.save(usuario=self.request.user)
