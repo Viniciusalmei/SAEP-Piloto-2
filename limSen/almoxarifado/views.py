@@ -8,7 +8,7 @@ from .models import IsAdminOrOperatorReadOnly
 class ProdutoViewSet(viewsets.ModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
-    permission_classes = [IsAdminOrOperatorReadOnly]  # Garante que rotas sejam privadas e controladas por perfil
+    permission_classes = [IsAdminOrOperatorReadOnly] 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['nome', 'data_cadastro']  # Filtros por nome e data exigidos
     search_fields = ['nome']
@@ -20,7 +20,6 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrOperatorReadOnly] 
     
     def perform_create(self, serializer):
-        # Captura os dados enviados na requisição
         produto = serializer.validated_data['produto']
         quantidade = serializer.validated_data['quantidade']
         tipo = serializer.validated_data['tipo']  # 'E' para Entrada, 'S' para Saída
