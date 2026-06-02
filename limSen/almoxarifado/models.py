@@ -1,5 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from rest_framework import permissions
+
+class IsAdminOrOperatorReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):        
+        if not request.user or not request.user.is_authenticated:
+            return False
+        
+        if request.method == 'DELETE':
+            
+            return request.user.is_staff or request.user.is_superuser
+                    
+        metodos_permitidos = ['GET', 'POST', 'PUT']
+        if request.method in metodos_permitidos:
+            return True        
+        return False
 
 class Produto(models.Model):
     nome = models.CharField(max_length=100)
