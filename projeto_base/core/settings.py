@@ -7,14 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = ''
+SECRET_KEY = '_5yxm_(#$3#bki*!@=v3(0klew-2+^@r@r*%)n=-kqg5r7@lr-'
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
+AUTH_USER_MODEL = 'almoxarifado.Usuario'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -102,11 +101,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ]
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }

@@ -1,5 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+class Usuario(AbstractUser):
+    OPERADOR = 'OPERADOR'
+    ADMINISTRADOR = 'ADMINISTRADOR'
+    TIPO_CHOICES = [
+        (OPERADOR, 'Operador de Almoxarifado'),
+        (ADMINISTRADOR, 'Administrador do Sistema'),
+    ]
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default=OPERADOR)
 
 class Produto(models.Model):
     nome = models.CharField(max_length=100)
@@ -20,7 +29,7 @@ class Movimentacao(models.Model):
     quantidade = models.IntegerField()
     tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)
     data_hora = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.produto.nome} ({self.quantidade})"
