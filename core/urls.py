@@ -6,4 +6,3 @@ urlpatterns = [
     path('api/', include('almoxarifado.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]
-
