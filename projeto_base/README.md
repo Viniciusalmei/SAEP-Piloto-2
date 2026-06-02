@@ -1,29 +1,43 @@
-# Projeto Base - Gerenciamento de Almoxarifado
+# 📦 API Gerenciamento de Almoxarifado
 
-Este é o projeto base em Django para a realização da prova. O sistema já possui a estrutura básica de modelos, API e autenticação funcionando.
+Sistema de back-end desenvolvido em Django REST Framework para controle de estoque e gerenciamento de permissões.
 
-## Configurações Iniciais
+---
 
-- **Superusuário**: `admin` / `admin123`
-- **Base URL da API**: `/api/`
-- **Autenticação**: `/api-auth/`
+## 🔐 Credenciais de Acesso (Testes)
 
-## O que deve ser feito (Requisitos do Documento)
+Utilize os usuários abaixo para testar as regras de permissão na API:
 
-1. **Tipos de Usuários**: Implementar lógica para distinguir entre `Operador de Almoxarifado` e `Administrador`.
-2. **Controle de Acesso**: 
-   - Operador: GET, POST, PUT.
-   - Administrador: GET, POST, PUT, DELETE.
-3. **Lógica de Estoque**: No momento da criação de uma `Movimentacao` de saída (S):
-   - Validar se há estoque disponível.
-   - Bloquear se a quantidade solicitada for maior que o saldo.
-   - Retornar mensagem: “Saída não permitida: estoque insuficiente. Disponível X: Solicitado: Y”.
-   - Se permitido, atualizar o campo `quantidade_estoque` do `Produto`.
-4. **Paginação e Filtros**: Já configurados, mas verifique se atendem aos requisitos de filtro por nome e data.
-5. **Testes**: Criar a pasta `docs` e o arquivo `plano_testes.docx` conforme as instruções.
+- **Administrador (Superusuário)**:
+  - Usuário: `senai`
+  - Senha: `123`
 
-## Como rodar
-1. Crie a VENV `py -m venv venv` ou `py -m venv env`
-2. Instale as dependências: `pip install django djangorestframework django-filter`
-3. Execute as migrações: `python manage.py migrate`
-4. Inicie o servidor: `python manage.py runserver`
+- **Operador de Almoxarifado**:
+  - Usuário: `vinicius`
+  - Senha: `senai123`
+
+---
+
+## 🛣️ Rotas da API (Endpoints)
+
+Abaixo estão as rotas disponíveis no sistema para navegação e testes via navegador, Postman ou Insomnia:
+
+* **Login (Autenticação por Sessão):** `http://127.0.0.1:8000/api-auth/login/`
+* **Painel Raiz da API (Lista de rotas):** `http://127.0.0.1:8000/api/`
+
+### 📦 Módulo de Produtos
+* **URL:** `http://127.0.0.1:8000/api/produtos/`
+* **Métodos Suportados:** 
+  * `GET`, `POST` (Acesso para Admin e Operador).
+  * `PUT`, `DELETE` (Acesso restrito ao Admin).
+* **Filtros e Paginação:** Suporta paginação nativa configurada para 5 itens por página e filtros por query params (`?nome=` e `?data_cadastro=`).
+
+### 🔄 Módulo de Movimentações (Controle de Estoque)
+* **URL:** `http://127.0.0.1:8000/api/movimentacoes/`
+* **Métodos Suportados:** 
+  * `GET`, `POST` (Acesso para Admin e Operador).
+  * `PUT`, `DELETE` (Acesso restrito ao Admin).
+* **Regras de Negócio Automáticas no método POST:** 
+  * Deduz ou adiciona ao estoque do Produto automaticamente.
+  * Valida e bloqueia operações de saída (`S`) que sejam maiores que o saldo disponível em estoque.
+  * Registra de forma automática o usuário logado responsável pela ação.
