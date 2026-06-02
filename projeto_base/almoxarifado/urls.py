@@ -8,4 +8,5 @@ router.register(r'movimentacoes', MovimentacaoViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+
 ]
