@@ -1,7 +1,10 @@
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Produto, Movimentacao
-from .serializers import ProdutoSerializer, MovimentacaoSerializer
+from .serializers import ProdutoSerializer, MovimentacaoSerializer, CadastroSerializer
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets, filters, generics
 
 class ProdutoViewSet(viewsets.ModelViewSet):
     queryset = Produto.objects.all()
@@ -18,3 +21,10 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # ATENÇÃO ALUNO! Implemente a logica de estoque aqui 
         serializer.save(usuario=self.request.user)
+
+Usuario = get_user_model()
+
+class CadastroView(generics.CreateAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = CadastroSerializer
+    permission_classes = [AllowAny]
