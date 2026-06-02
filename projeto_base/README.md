@@ -23,7 +23,7 @@ Este é o projeto base em Django para a realização da prova. O sistema já pos
 5. **Testes**: Criar a pasta `docs` e o arquivo `plano_testes.docx` conforme as instruções.
 
 ## Como rodar
-
-1. Instale as dependências: `pip install django djangorestframework django-filter`
-2. Execute as migrações: `python manage.py migrate`
-3. Inicie o servidor: `python manage.py runserver`
+1. Crie a VENV `py -m venv venv` ou `py -m venv env`
+2. Instale as dependências: `pip install django djangorestframework django-filter`
+3. Execute as migrações: `python manage.py migrate`
+4. Inicie o servidor: `python manage.py runserver`
