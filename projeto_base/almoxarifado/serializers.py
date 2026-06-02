@@ -8,12 +8,26 @@ class PerfilSerializer(serializers.ModelSerializer):
         fields = ['tipo']
 
 class UserSerializer(serializers.ModelSerializer):
-   
+    tipo_perfil = serializers.ChoiceField(choices=Perfil.TIPOS_CHOICES, write_only=True)
+    password = serializers.CharField(write_only=True)
     perfil = PerfilSerializer(read_only=True)
-    
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'perfil']
+        fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'tipo_perfil', 'perfil']
+
+    def create(self, validated_data):
+        tipo_perfil = validated_data.pop('tipo_perfil')
+        password = validated_data.pop('password')
+        
+       
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        
+       
+        Perfil.objects.create(usuario=user, tipo=tipo_perfil)
+        return user
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
