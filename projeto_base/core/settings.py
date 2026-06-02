@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-chave-de-teste-local-saep'
 
 DEBUG = True
 
