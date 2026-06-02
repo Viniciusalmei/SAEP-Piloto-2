@@ -1,6 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Novo modelo para diferenciar os tipos de usuários
+class Perfil(models.Model):
+    TIPOS_CHOICES = (
+        ('ADMIN', 'Administrador'),
+        ('OPERADOR', 'Operador de Almoxarifado'),
+    )
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    tipo = models.CharField(max_length=10, choices=TIPOS_CHOICES, default='OPERADOR')
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.get_tipo_display()}"
+
 class Produto(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField(blank=True, null=True)
