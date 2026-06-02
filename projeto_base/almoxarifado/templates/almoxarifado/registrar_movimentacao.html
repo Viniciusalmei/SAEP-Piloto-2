@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Movimentação</title>
+</head>
+<body>
+    <h2>Registrar Movimentação de Estoque</h2>
+    <h3>Produto: {{ produto.nome }}</h3>
+    <p>Estoque Atual: {{ produto.quantidade_estoque }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="tipo">Tipo de Movimentação:</label>
+        <select name="tipo" id="tipo" required>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+        <br><br>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade" min="1" required>
+        <br><br>
+        <button type="submit">Salvar Movimentação</button>
+    </form>
+
+    <br>
+    <a href="{% url 'listar_produtos' %}">Voltar para a listagem</a>
+</body>
+</html>
