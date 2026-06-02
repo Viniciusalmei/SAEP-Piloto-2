@@ -26,5 +26,18 @@ class MovimentacaoViewSet(viewsets.ModelViewSet):
     permission_classes = [RoleBasedAccessPermission]
     
     def perform_create(self, serializer):
-        # ATENÇÃO ALUNO! Implemente a logica de estoque aqui 
+        produto = serializer.validated_data['produto']
+        quantidade = serializer.validated_data['quantidade']
+        tipo = serializer.validated_data['tipo']
+
+        if tipo == 'S':
+            if quantidade > produto.quantidade_estoque:
+                raise serializers.ValidationError(
+                    f"Saída não permitida: estoque insuficiente. Disponível: {produto.quantidade_estoque}. Solicitado: {quantidade}."
+                )
+            produto.quantidade_estoque -= quantidade
+        elif tipo == 'E':
+            produto.quantidade_estoque += quantidade
+            
+        produto.save()
         serializer.save(usuario=self.request.user)
