@@ -3,17 +3,20 @@ from django.contrib.auth.models import User
 from rest_framework import permissions
 
 class IsAdminOrOperatorReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):        
+    def has_permission(self, request, view):
+        # 1. Garante o acesso privado (exige autenticação) 
         if not request.user or not request.user.is_authenticated:
             return False
-        
+
+        # 2. Restrição do método DELETE (Apenas para Administradores) 
         if request.method == 'DELETE':
-            
             return request.user.is_staff or request.user.is_superuser
-                    
+            
+       
         metodos_permitidos = ['GET', 'POST', 'PUT']
         if request.method in metodos_permitidos:
-            return True        
+            return True
+            
         return False
 
 class Produto(models.Model):
