@@ -13,8 +13,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
+AUTH_USER_MODEL = 'almoxarifado.Usuario'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
