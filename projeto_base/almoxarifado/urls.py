@@ -9,9 +9,7 @@ router.register(r'movimentacoes', MovimentacaoViewSet)
 router.register(r'usuarios', CadastroUsuarioViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    
-    # Rotas para efetuar Login e obter Token JWT
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', include(router.urls)),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
