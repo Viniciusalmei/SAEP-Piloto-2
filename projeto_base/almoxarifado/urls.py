@@ -6,6 +6,8 @@ router = DefaultRouter()
 router.register(r'produtos', ProdutoViewSet)
 router.register(r'movimentacoes', MovimentacaoViewSet)
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

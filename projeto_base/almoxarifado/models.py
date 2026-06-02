@@ -5,10 +5,10 @@ from django.core.validators import MinValueValidator
 class Produto(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField(blank=True, null=True)
-    # Adicionado o MinValueValidator para garantir que o estoque nunca fique abaixo de 0
+
     quantidade_estoque = models.IntegerField(
         default=0, 
-        validators=[MinValueValidator(0, message="A quantidade em estoque não pode ser negativa.")]
+        validators=[MinValueValidator(0, message="A quantidade em estoque não pode ser negativa")]
     )
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     data_cadastro = models.DateTimeField(auto_now_add=True)
@@ -22,7 +22,7 @@ class Movimentacao(models.Model):
         ('S', 'Saída'),
     )
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='movimentacoes')
-    # Adicionado o MinValueValidator para impedir registros de movimentação com valores zerados ou negativos no banco
+
     quantidade = models.IntegerField(
         validators=[MinValueValidator(1, message="A quantidade movimentada deve ser de pelo menos 1 unidade.")]
     )
